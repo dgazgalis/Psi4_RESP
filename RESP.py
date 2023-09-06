@@ -42,13 +42,19 @@ def calcRESPCharges(mol, basisSet, method, gridPsi4 = 1):
     return resp_charges
 
 inputFile = "./"+molId+".sdf"
-suppl = Chem.SDMolSupplier(inputFile, removeHs=False) 
-
+#Convert SDF to MOL2 to preserve cordinates when reading in compound for tleap
 obConversion = ob.OBConversion()
+obConversion.SetInAndOutFormats("sdf", "mol2")
+obmol = ob.OBMol()
+obConversion.ReadFile(obmol, inputFile)
+obConversion.WriteFile(obmol, molId+".mol2")
+
 obConversion.SetInAndOutFormats("xyz", "mol2")
 
 print('Trying:', molId)
+suppl = Chem.SDMolSupplier(inputFile, removeHs=False) 
 mol = next(suppl)
+
 #Quick optimization using MMFF to put the inital mol into more sane cordinates for the more costly quantum mechanics based optimization  
 #NOTE: NEED TO TEST
 #AllChem.MMFFOptimizeMolecule(mol)
@@ -106,3 +112,18 @@ for atom in ob.OBMolAtomIter(ob_mol):
 outfile_mol2 = "./"+molId+"_RESP.mol2"
 print("Finished. Saved compound with partial charges as mol2 file: %s" % outfile_mol2)
 obConversion.WriteFile(ob_mol, outfile_mol2)
+
+
+
+from openbabel import openbabel as ob
+
+obConversion = ob.OBConversion()
+obConversion.SetInAndOutFormats("sdf", "mol2")
+obmol = ob.OBMol()
+obConversion.ReadFile(obmol,"ruc_core.sdf")
+obConversion.WriteFile(obmol, "test.mol2")
+
+    
+    
+    
+    
