@@ -112,18 +112,3 @@ for atom in ob.OBMolAtomIter(ob_mol):
 outfile_mol2 = "./"+molId+"_RESP.mol2"
 print("Finished. Saved compound with partial charges as mol2 file: %s" % outfile_mol2)
 obConversion.WriteFile(ob_mol, outfile_mol2)
-
-
-
-from openbabel import openbabel as ob
-
-obConversion = ob.OBConversion()
-obConversion.SetInAndOutFormats("sdf", "mol2")
-obmol = ob.OBMol()
-obConversion.ReadFile(obmol,"ruc_core.sdf")
-obConversion.WriteFile(obmol, "test.mol2")
-
-    
-    
-    
-    
